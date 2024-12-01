@@ -32,18 +32,21 @@ INNER JOIN
 A `LEFT JOIN` is used here to get all the properties, including those that may not have any reviews. If no reviews are available, the review columns will contain `NULL` values for those properties.
 
 ```sql
--- LEFT JOIN: Retrieve all properties and their reviews, including properties that have no reviews
+-- LEFT JOIN: Retrieve all properties and their reviews, including properties with no reviews
 SELECT 
-    p.property_id,     -- Property ID
-    p.name AS property_name, -- Property name
-    p.location,        -- Property location
-    p.pricepernight,   -- Price per night for the property
-    r.rating,          -- Rating for the property (if available)
-    r.comment          -- Review comment for the property (if available)
+    p.property_id,
+    p.name AS property_name,
+    r.review_id,
+    r.rating,
+    r.comment
 FROM 
-    Properties p
+    Property p
 LEFT JOIN 
-    Reviews r ON p.property_id = r.property_id;  -- Join on property_id to include reviews, even if no reviews exist
+    Review r  -- Join on property_id to include reviews, even if no reviews exist
+ON 
+    p.property_id = r.property_id
+ORDER BY 
+    p.name;  -- Ordering the results by property name
 ```
 
 ### 3. **FULL OUTER JOIN**: Retrieve all users and all bookings, even if the user has no booking or a booking is not linked to a user.
