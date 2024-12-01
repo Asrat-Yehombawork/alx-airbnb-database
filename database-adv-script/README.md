@@ -1,12 +1,22 @@
-# Airbnb Clone Backend - SQL Queries for Joins
+# Airbnb Clone Backend - SQL Queries
 
-Welcome to the repository! This project is focused on implementing and understanding different types of SQL joins for the Airbnb Clone backend. Below, you'll find the SQL queries designed to fetch data using various types of joins, along with detailed comments explaining how they work.
+Welcome to the repository! This project focuses on implementing and understanding various SQL queries for the Airbnb Clone backend. The following sections include SQL queries for different tasks such as joins, subqueries, data analysis, and aggregations, with detailed comments explaining their usage and functionality.
 
-## SQL Queries Overview
+---
 
-The following queries demonstrate how to retrieve data from the database using **INNER JOIN**, **LEFT JOIN**, and **FULL OUTER JOIN**:
+## Table of Contents
 
-### 1. **INNER JOIN**: Retrieve all bookings and the respective users who made those bookings.
+1. [SQL Queries for Joins](#sql-queries-for-joins)
+2. [SQL Queries for Correlated and Non-Correlated Subqueries](#sql-queries-for-correlated-and-non-correlated-subqueries)
+3. [SQL Data Analysis with Aggregation and Window Functions](#sql-data-analysis-with-aggregation-and-window-functions)
+
+---
+
+## SQL Queries for Joins
+
+This section demonstrates how to retrieve data from the database using different types of SQL joins, including **INNER JOIN**, **LEFT JOIN**, and **FULL OUTER JOIN**.
+
+### 1. **INNER JOIN**: Retrieve all bookings and the respective users who made those bookings
 
 This query joins the `Bookings` table with the `Users` table to get the booking details along with the user information (first name, last name, email) of the person who made the booking. Only bookings that have associated users are included in the result.
 
@@ -27,7 +37,7 @@ INNER JOIN
     Users u ON b.user_id = u.user_id;  -- Join on user_id to get the respective user
 ```
 
-### 2. **LEFT JOIN**: Retrieve all properties and their reviews, including properties that have no reviews.
+### 2. **LEFT JOIN**: Retrieve all properties and their reviews, including properties that have no reviews
 
 A `LEFT JOIN` is used here to get all the properties, including those that may not have any reviews. If no reviews are available, the review columns will contain `NULL` values for those properties.
 
@@ -49,7 +59,7 @@ ORDER BY
     p.name;  -- Ordering the results by property name
 ```
 
-### 3. **FULL OUTER JOIN**: Retrieve all users and all bookings, even if the user has no booking or a booking is not linked to a user.
+### 3. **FULL OUTER JOIN**: Retrieve all users and all bookings, even if the user has no booking or a booking is not linked to a user
 
 This query uses a `FULL OUTER JOIN` to ensure that all users and all bookings are included in the result. It will show users who haven't made any bookings and bookings that are not associated with a user.
 
@@ -71,51 +81,15 @@ FULL OUTER JOIN
     Bookings b ON u.user_id = b.user_id;  -- Join on user_id to include users with no bookings and bookings with no users
 ```
 
-## How to Use the SQL Queries
+---
 
-These SQL queries are designed to run on the backend database of the Airbnb Clone. They should be executed in a relational database system like MySQL or PostgreSQL to fetch data. The queries help fetch detailed information about bookings, users, properties, and reviews, which can be essential for building the Airbnb Clone features like user profiles, property details, and booking management.
+## SQL Queries for Correlated and Non-Correlated Subqueries
 
-### Requirements:
-1. A relational database (PostgreSQL, MySQL, etc.) with the following tables:
-   - `Users`
-   - `Bookings`
-   - `Properties`
-   - `Reviews`
-2. Data populated into the tables as per the schema.
-
-### Running the Queries:
-1. Set up your database with the required tables and relationships.
-2. Execute the queries one by one using your database management system (e.g., pgAdmin, MySQL Workbench, or a similar tool).
-3. Review the results to ensure that the data is retrieved correctly based on the type of join.
-
-## Why These Joins Are Important
-
-- **INNER JOIN**: Used when we only want to see the records that have related data in both tables. This is great for fetching data that must be linked.
-  
-- **LEFT JOIN**: Useful when we want to include records from the left table even if there's no corresponding match in the right table. This is helpful when we want to see everything (e.g., all properties) but also consider records with missing data (e.g., properties without reviews).
-  
-- **FULL OUTER JOIN**: Provides a full picture, including all records from both tables, whether they match or not. This is useful when we want to see all users and all bookings, even if some users haven't made any bookings or bookings don't have users linked.
-
-
-
-
-
-
-
-# SQL Queries for Correlated and Non-Correlated Subqueries
-
-## Overview
-This repository contains SQL queries that demonstrate how to use **correlated** and **non-correlated subqueries** in a real-world scenario. These queries are useful for working with data where you need to perform complex filtering, aggregation, or comparison operations. 
-
-### Objective:
-- To retrieve properties where the average rating is greater than 4.0 (using a **non-correlated subquery**).
-- To find users who have made more than 3 bookings (using a **correlated subquery**).
-
-## SQL Queries
+This section demonstrates how to use **correlated** and **non-correlated subqueries** in SQL queries.
 
 ### 1. **Non-Correlated Subquery**: Find Properties with Average Rating > 4.0
 
-This query retrieves properties that have an **average rating** greater than **4.0**. It uses a **non-correlated subquery**, which means the subquery is independent of the outer query. 
+This query retrieves properties that have an **average rating** greater than **4.0**. It uses a **non-correlated subquery**, meaning the subquery is independent of the outer query.
 
 ```sql
 -- Retrieve all properties where the average rating is greater than 4.0
@@ -131,16 +105,9 @@ WHERE
      WHERE r.property_id = p.property_id) > 4.0;
 ```
 
-### Explanation:
-- The subquery `(SELECT AVG(r.rating) FROM Review r WHERE r.property_id = p.property_id)` calculates the average rating for each property.
-- The outer query filters for properties where the average rating is greater than 4.0.
-- This query is **non-correlated** because the inner query does not reference columns from the outer query, except for `property_id`.
-
----
-
 ### 2. **Correlated Subquery**: Find Users with More Than 3 Bookings
 
-This query identifies **users** who have made **more than 3 bookings**. It uses a **correlated subquery**, which means the subquery depends on the values from the outer query.
+This query identifies **users** who have made **more than 3 bookings**. It uses a **correlated subquery**, where the subquery depends on values from the outer query.
 
 ```sql
 -- Find users who have made more than 3 bookings
@@ -157,73 +124,67 @@ WHERE
      WHERE b.user_id = u.user_id) > 3;
 ```
 
-### Explanation:
-- The subquery `(SELECT COUNT(*) FROM Booking b WHERE b.user_id = u.user_id)` counts the number of bookings made by each user.
-- The outer query filters for users who have made more than 3 bookings.
-- This query is **correlated** because the subquery references the `u.user_id` from the outer query. The subquery is evaluated for each row in the outer query.
-
 ---
 
-## How to Use
+## SQL Data Analysis with Aggregation and Window Functions
 
-1. Copy the SQL queries into your SQL client or database tool (e.g., MySQL Workbench, PostgreSQL).
-2. Make sure your database has the `Property`, `Review`, `User`, and `Booking` tables populated with relevant data.
-3. Run the queries to retrieve properties with high ratings or users who are frequent bookers.
+This section contains SQL queries that demonstrate how to analyze data using **aggregation functions** (like `COUNT`) and **window functions** (like `ROW_NUMBER` and `RANK`).
+
+### Query 1: Total Number of Bookings per User
+
+This query calculates the total number of bookings made by each user in the system. It uses the `COUNT` function to aggregate the number of bookings for each user.
+
+```sql
+-- Total number of bookings per user
+SELECT 
+    u.user_id,
+    u.first_name,
+    u.last_name,
+    COUNT(b.booking_id) AS total_bookings
+FROM 
+    User u
+LEFT JOIN 
+    Booking b ON u.user_id = b.user_id
+GROUP BY 
+    u.user_id, u.first_name, u.last_name
+ORDER BY 
+    total_bookings DESC;
+```
+
+### Query 2: Ranking Properties by Bookings
+
+This query ranks properties based on the total number of bookings using **window functions**:
+- **`ROW_NUMBER`**: Assigns a unique rank to each property, even if there are ties in booking count.
+- **`RANK`**: Assigns the same rank to properties with identical booking counts.
+
+```sql
+-- Ranking properties by the total number of bookings
+SELECT 
+    p.property_id,
+    p.name AS property_name,
+    COUNT(b.booking_id) AS total_bookings,
+    ROW_NUMBER() OVER (ORDER BY COUNT(b.booking_id) DESC) AS row_num,
+    RANK() OVER (ORDER BY COUNT(b.booking_id) DESC) AS rank
+FROM 
+    Property p
+LEFT JOIN 
+    Booking b ON p.property_id = b.property_id
+GROUP BY 
+    p.property_id, p.name
+ORDER BY 
+    rank;
+```
 
 ---
 
 ## Conclusion
 
-These examples illustrate the difference between **correlated** and **non-correlated subqueries**:
-- **Non-Correlated Subquery**: The subquery is independent and can be executed separately.
-- **Correlated Subquery**: The subquery is dependent on the outer query and is evaluated for each row.
+This repository provides a series of SQL queries to demonstrate various important SQL operations:
+- **Joins**: `INNER JOIN`, `LEFT JOIN`, and `FULL OUTER JOIN` are used to retrieve and combine data from different tables.
+- **Subqueries**: Both correlated and non-correlated subqueries are employed for complex filtering and comparisons.
+- **Aggregation and Window Functions**: Aggregation functions like `COUNT` and window functions like `ROW_NUMBER` and `RANK` are applied for data analysis and ranking.
 
-
-
-
-
-# SQL Data Analysis with Aggregation and Window Functions
-
-Welcome to the **SQL Data Analysis** repository! This repository contains SQL queries that demonstrate how to analyze data using **aggregation functions** (like `COUNT`) and **window functions** (like `ROW_NUMBER` and `RANK`). These techniques are essential for extracting meaningful insights from relational databases.
-
-## Objective
-
-The goal is to:
-1. Find the total number of bookings made by each user.
-2. Rank properties based on the total number of bookings, using window functions.
-
-## What's Inside?
-
-### Query 1: Total Number of Bookings per User
-This query calculates the total number of bookings made by each user in the system. Here's how it works:
-- **`COUNT` Function**: Aggregates the number of bookings for each user.
-- **`GROUP BY` Clause**: Groups the data by user to ensure accurate aggregation.
-- **`ORDER BY` Clause**: Sorts the results so users with the most bookings appear at the top.
-
-The query also joins the `User` and `Booking` tables to include user details like first name and last name in the results.
-
-### Query 2: Ranking Properties by Bookings
-This query ranks properties based on how frequently they are booked. It uses two window functions:
-- **`ROW_NUMBER`**: Assigns a unique rank to each property, even if there are ties in the booking count.
-- **`RANK`**: Assigns the same rank to properties with identical booking counts.
-
-The query ensures that all properties, even those without bookings, are included by using a `LEFT JOIN`. 
-
-## Why These Queries Are Useful
-
-- **Booking Insights**: The first query helps businesses understand user activity and identify top customers.
-- **Property Popularity**: The second query reveals the most popular properties, which can inform marketing strategies and operational focus.
-
-## How to Use
-To run these queries:
-1. Ensure you have a database that includes the following tables: `User`, `Booking`, and `Property`.
-2. Paste the queries into your SQL client or query editor.
-3. Execute the queries and observe the results.
-
-### Prerequisites
-- A SQL database with tables matching the schema described above.
-- Basic understanding of SQL, including joins, grouping, and ordering.
-
+These queries can help in extracting valuable insights from the database for the Airbnb Clone backend. To run these queries, make sure your database has the required tables (`Users`, `Bookings`, `Properties`, `Reviews`, `Payments`) and that the data is populated accordingly.
 
 
 
