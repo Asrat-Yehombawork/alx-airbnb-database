@@ -177,3 +177,53 @@ WHERE
 These examples illustrate the difference between **correlated** and **non-correlated subqueries**:
 - **Non-Correlated Subquery**: The subquery is independent and can be executed separately.
 - **Correlated Subquery**: The subquery is dependent on the outer query and is evaluated for each row.
+
+
+
+
+
+# SQL Data Analysis with Aggregation and Window Functions
+
+Welcome to the **SQL Data Analysis** repository! This repository contains SQL queries that demonstrate how to analyze data using **aggregation functions** (like `COUNT`) and **window functions** (like `ROW_NUMBER` and `RANK`). These techniques are essential for extracting meaningful insights from relational databases.
+
+## Objective
+
+The goal is to:
+1. Find the total number of bookings made by each user.
+2. Rank properties based on the total number of bookings, using window functions.
+
+## What's Inside?
+
+### Query 1: Total Number of Bookings per User
+This query calculates the total number of bookings made by each user in the system. Here's how it works:
+- **`COUNT` Function**: Aggregates the number of bookings for each user.
+- **`GROUP BY` Clause**: Groups the data by user to ensure accurate aggregation.
+- **`ORDER BY` Clause**: Sorts the results so users with the most bookings appear at the top.
+
+The query also joins the `User` and `Booking` tables to include user details like first name and last name in the results.
+
+### Query 2: Ranking Properties by Bookings
+This query ranks properties based on how frequently they are booked. It uses two window functions:
+- **`ROW_NUMBER`**: Assigns a unique rank to each property, even if there are ties in the booking count.
+- **`RANK`**: Assigns the same rank to properties with identical booking counts.
+
+The query ensures that all properties, even those without bookings, are included by using a `LEFT JOIN`. 
+
+## Why These Queries Are Useful
+
+- **Booking Insights**: The first query helps businesses understand user activity and identify top customers.
+- **Property Popularity**: The second query reveals the most popular properties, which can inform marketing strategies and operational focus.
+
+## How to Use
+To run these queries:
+1. Ensure you have a database that includes the following tables: `User`, `Booking`, and `Property`.
+2. Paste the queries into your SQL client or query editor.
+3. Execute the queries and observe the results.
+
+### Prerequisites
+- A SQL database with tables matching the schema described above.
+- Basic understanding of SQL, including joins, grouping, and ordering.
+
+
+
+
