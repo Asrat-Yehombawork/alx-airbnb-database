@@ -95,3 +95,85 @@ These SQL queries are designed to run on the backend database of the Airbnb Clon
 - **LEFT JOIN**: Useful when we want to include records from the left table even if there's no corresponding match in the right table. This is helpful when we want to see everything (e.g., all properties) but also consider records with missing data (e.g., properties without reviews).
   
 - **FULL OUTER JOIN**: Provides a full picture, including all records from both tables, whether they match or not. This is useful when we want to see all users and all bookings, even if some users haven't made any bookings or bookings don't have users linked.
+
+
+
+
+
+
+
+# SQL Queries for Correlated and Non-Correlated Subqueries
+
+## Overview
+This repository contains SQL queries that demonstrate how to use **correlated** and **non-correlated subqueries** in a real-world scenario. These queries are useful for working with data where you need to perform complex filtering, aggregation, or comparison operations. 
+
+### Objective:
+- To retrieve properties where the average rating is greater than 4.0 (using a **non-correlated subquery**).
+- To find users who have made more than 3 bookings (using a **correlated subquery**).
+
+## SQL Queries
+
+### 1. **Non-Correlated Subquery**: Find Properties with Average Rating > 4.0
+
+This query retrieves properties that have an **average rating** greater than **4.0**. It uses a **non-correlated subquery**, which means the subquery is independent of the outer query. 
+
+```sql
+-- Retrieve all properties where the average rating is greater than 4.0
+SELECT 
+    p.property_id,
+    p.name AS property_name
+FROM 
+    Property p
+WHERE 
+    -- Subquery calculates the average rating for each property
+    (SELECT AVG(r.rating) 
+     FROM Review r 
+     WHERE r.property_id = p.property_id) > 4.0;
+```
+
+### Explanation:
+- The subquery `(SELECT AVG(r.rating) FROM Review r WHERE r.property_id = p.property_id)` calculates the average rating for each property.
+- The outer query filters for properties where the average rating is greater than 4.0.
+- This query is **non-correlated** because the inner query does not reference columns from the outer query, except for `property_id`.
+
+---
+
+### 2. **Correlated Subquery**: Find Users with More Than 3 Bookings
+
+This query identifies **users** who have made **more than 3 bookings**. It uses a **correlated subquery**, which means the subquery depends on the values from the outer query.
+
+```sql
+-- Find users who have made more than 3 bookings
+SELECT 
+    u.user_id,
+    u.first_name,
+    u.last_name
+FROM 
+    User u
+WHERE 
+    -- Subquery counts the number of bookings made by each user
+    (SELECT COUNT(*) 
+     FROM Booking b 
+     WHERE b.user_id = u.user_id) > 3;
+```
+
+### Explanation:
+- The subquery `(SELECT COUNT(*) FROM Booking b WHERE b.user_id = u.user_id)` counts the number of bookings made by each user.
+- The outer query filters for users who have made more than 3 bookings.
+- This query is **correlated** because the subquery references the `u.user_id` from the outer query. The subquery is evaluated for each row in the outer query.
+
+---
+
+## How to Use
+
+1. Copy the SQL queries into your SQL client or database tool (e.g., MySQL Workbench, PostgreSQL).
+2. Make sure your database has the `Property`, `Review`, `User`, and `Booking` tables populated with relevant data.
+3. Run the queries to retrieve properties with high ratings or users who are frequent bookers.
+
+---
+
+## Conclusion
+
+These examples illustrate the difference between **correlated** and **non-correlated subqueries**:
+- **Non-Correlated Subquery**: The subquery is independent and can be executed separately.
+- **Correlated Subquery**: The subquery is dependent on the outer query and is evaluated for each row.
