@@ -1,6 +1,6 @@
 ### **Normalization to Achieve Third Normal Form (3NF)**
 
-To ensure the database is normalized to 3NF, we applied the following steps to eliminate redundancies and ensure dependency relationships are properly structured.
+To ensure the database is normalized to 3NF, I applied the following steps to eliminate redundancies and ensure dependency relationships are properly structured.
 
 ---
 
