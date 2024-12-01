@@ -1,4 +1,3 @@
-```markdown
 # Query Optimization Report
 
 ## Objective:

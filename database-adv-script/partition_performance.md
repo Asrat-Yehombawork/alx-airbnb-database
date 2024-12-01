@@ -1,4 +1,3 @@
-```markdown
 # Partitioning Performance Report for Booking Table
 
 ## Objective
